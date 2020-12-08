@@ -1,0 +1,104 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=prob_submitjob
+#SBATCH --output=4vol2surfsubmitjobFNstoV1t.txt
+
+#This scripts projects probtrackx outputs (in structural space and log functioned) onto the freesurfer white surface
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/jobs_logvol2surf
+
+#set location for output for surface overlays
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob;
+cd $outp
+mkdir FPtonewcentral_surf
+mkdir COtonewcentral_surf
+mkdir DMNtonewcentral_surf
+mkdir FPtomid_surf
+mkdir COtomid_surf
+mkdir DMNtomid_surf
+mkdir FPtonewfar_surf
+mkdir COtonewfar_surf
+mkdir DMNtonewfar_surf
+#set location for where probtrackx outputs in structural space and normalized are
+prob=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob;
+
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+for patient in `ls -1 $diff`
+do 
+echo "#!/bin/bash
+#
+#SBATCH --time=2:00:00
+#SBATCH --job-name=vol2surf$patient
+#SBATCH --partition=express
+#SBATCH --mem-per-cpu=8000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/vol2surf_$patient.txt
+#SBATCH --ntasks=1
+
+SUBJECTS_DIR=$diff
+#mri_vol2surf --src (inputvolumepath) --out (outputpath) --trgsubject (subid) --hemi (lh or rh) --surf white (default) --projdist-avg min max del
+
+### newcentral ####
+
+#put newcentral to FP normalized on surf
+mri_vol2surf --src $prob/FPtonewcentral_logprob/FPtonewcentral_T1logptrack_$patient.nii.gz --o $outp/FPtonewcentral_surf/FPtonewcentrallhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/FPtonewcentral_logprob/FPtonewcentral_T1logptrack_$patient.nii.gz --o $outp/FPtonewcentral_surf/FPtonewcentralrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put newcentral to CO normalized on surf
+mri_vol2surf --src $prob/COtonewcentral_logprob/COtonewcentral_T1logptrack_$patient.nii.gz --o $outp/COtonewcentral_surf/COtonewcentrallhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/COtonewcentral_logprob/COtonewcentral_T1logptrack_$patient.nii.gz --o $outp/COtonewcentral_surf/COtonewcentralrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put newcentral to DMN normalized on surf
+mri_vol2surf --src $prob/DMNtonewcentral_logprob/DMNtonewcentral_T1logptrack_$patient.nii.gz --o $outp/DMNtonewcentral_surf/DMNtonewcentrallhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/DMNtonewcentral_logprob/DMNtonewcentral_T1logptrack_$patient.nii.gz --o $outp/DMNtonewcentral_surf/DMNtonewcentralrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+### newfar ####
+
+#put newfar to FP normalized on surf
+mri_vol2surf --src $prob/FPtonewfar_logprob/FPtonewfar_T1logptrack_$patient.nii.gz --o $outp/FPtonewfar_surf/FPtonewfarlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/FPtonewfar_logprob/FPtonewfar_T1logptrack_$patient.nii.gz --o $outp/FPtonewfar_surf/FPtonewfarrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put newfar to CO normalized on surf
+mri_vol2surf --src $prob/COtonewfar_logprob/COtonewfar_T1logptrack_$patient.nii.gz --o $outp/COtonewfar_surf/COtonewfarlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/COtonewfar_logprob/COtonewfar_T1logptrack_$patient.nii.gz --o $outp/COtonewfar_surf/COtonewfarrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put newfar to DMN normalized on surf
+mri_vol2surf --src $prob/DMNtonewfar_logprob/DMNtonewfar_T1logptrack_$patient.nii.gz --o $outp/DMNtonewfar_surf/DMNtonewfarlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/DMNtonewfar_logprob/DMNtonewfar_T1logptrack_$patient.nii.gz --o $outp/DMNtonewfar_surf/DMNtonewfarrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+### mid ####
+
+#put mid to FP normalized on surf
+mri_vol2surf --src $prob/FPtomid_logprob/FPtomid_T1logptrack_$patient.nii.gz --o $outp/FPtomid_surf/FPtomidlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/FPtomid_logprob/FPtomid_T1logptrack_$patient.nii.gz --o $outp/FPtomid_surf/FPtomidrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put mid to CO normalized on surf
+mri_vol2surf --src $prob/COtomid_logprob/COtomid_T1logptrack_$patient.nii.gz --o $outp/COtomid_surf/COtomidlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/COtomid_logprob/COtomid_T1logptrack_$patient.nii.gz --o $outp/COtomid_surf/COtomidrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+
+#put mid to DMN normalized on surf
+mri_vol2surf --src $prob/DMNtomid_logprob/DMNtomid_T1logptrack_$patient.nii.gz --o $outp/DMNtomid_surf/DMNtomidlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $prob/DMNtomid_logprob/DMNtomid_T1logptrack_$patient.nii.gz --o $outp/DMNtomid_surf/DMNtomidrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1" > $jobs/$patient.job
+
+sbatch $jobs/$patient.job
+
+done

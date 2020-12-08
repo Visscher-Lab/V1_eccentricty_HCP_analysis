@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=smooth_submitjob
+#SBATCH --output=grpavgsubmitjobFunc.txt
+
+#This scripts group averages the outputs that are already in fsaverage space and smoothed
+
+#set location for surface overlays to average
+over=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data;
+
+#set location for where group average outputs will go
+outp=$over/group_averages
+mkdir $outp
+
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#mri_concat filename* --o output --mean
+
+### newcentral ####
+#average newcentral  
+cd $over/central_surf
+mri_concat smooth*rh* --o $outp/centralrh.mgh --mean
+mri_concat smooth*lh* --o $outp/centrallh.mgh --mean
+
+### mid ####
+#average mid 
+cd $over/mid_surf
+mri_concat smooth*rh* --o $outp/midrh.mgh --mean
+mri_concat smooth*lh* --o $outp/midlh.mgh --mean
+
+### newfar ####
+#average newfar 
+cd $over/far_surf
+mri_concat smooth*rh* --o $outp/farrh.mgh --mean
+mri_concat smooth*lh* --o $outp/farlh.mgh --mean
+

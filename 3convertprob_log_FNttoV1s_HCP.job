@@ -1,0 +1,199 @@
+#!/bin/bash
+#
+#SBATCH --time=12:00:00
+#SBATCH --job-name=logprobHCP
+#SBATCH --partition=short
+#SBATCH --mem-per-cpu=8000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=3FNstoV1tlogprob_HCP.txt
+#SBATCH --ntasks=1
+
+
+##### Get track probabilities by dividing image by the max log  ########### 
+#Writh et al, 2018 Brain Connectivity
+
+#path where paths exist
+paths=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob;
+
+#path for log paths to go
+pathout=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob;
+cd $pathout
+mkdir FPtonewcentral_logprob
+mkdir COtonewcentral_logprob
+mkdir DMNtonewcentral_logprob
+mkdir FPtomid_logprob
+mkdir COtomid_logprob
+mkdir DMNtomid_logprob
+mkdir FPtonewfar_logprob
+mkdir COtonewfar_logprob
+mkdir DMNtonewfar_logprob
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#path for job files to go
+jobs=/data/scratch/snolin/HCP_jobs/jobs_problog
+
+#path to folder to pull all subject's ids
+D=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+for patient in `ls -1 $D`
+do
+
+pathout=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob;
+
+### newcentral paths ###
+#set path for newcentral V1 to FP log paths to go and perform log function on newcentral paths
+out=$pathout/FPtonewcentral_logprob
+in=$pathout/FPtonewcentral_instruct
+
+#make new image of log values
+cd $in
+fslmaths FPtonewcentral_T1_$patient.nii.gz -log $out/FPtonewcentral_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/FPtonewcentral_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/FPtonewcentral_T1log_$patient.nii.gz -div $maxval $out/FPtonewcentral_T1logptrack_$patient.nii.gz
+
+#set path for newcentral V1 to CO log paths to go and perform log function on newcentral paths
+out=$pathout/COtonewcentral_logprob
+in=$pathout/COtonewcentral_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/COtonewcentral_T1_$patient.nii.gz -log $out/COtonewcentral_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/COtonewcentral_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/COtonewcentral_T1log_$patient.nii.gz -div $maxval $out/COtonewcentral_T1logptrack_$patient.nii.gz
+
+#set path for newcentral V1 to DMN log paths to go and perform log function on newcentral paths
+out=$pathout/DMNtonewcentral_logprob
+in=$pathout/DMNtonewcentral_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/DMNtonewcentral_T1_$patient.nii.gz -log $out/DMNtonewcentral_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/DMNtonewcentral_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/DMNtonewcentral_T1log_$patient.nii.gz -div $maxval $out/DMNtonewcentral_T1logptrack_$patient.nii.gz
+
+### newfar paths ###
+#set path for newfar V1 to FP log paths to go and perform log function on newfar paths
+out=$pathout/FPtonewfar_logprob
+in=$pathout/FPtonewfar_instruct
+
+#make new image of log values
+cd $in
+fslmaths FPtonewfar_T1_$patient.nii.gz -log $out/FPtonewfar_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/FPtonewfar_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/FPtonewfar_T1log_$patient.nii.gz -div $maxval $out/FPtonewfar_T1logptrack_$patient.nii.gz
+
+#set path for newfar V1 to CO log paths to go and perform log function on newfar paths
+out=$pathout/COtonewfar_logprob
+in=$pathout/COtonewfar_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/COtonewfar_T1_$patient.nii.gz -log $out/COtonewfar_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/COtonewfar_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/COtonewfar_T1log_$patient.nii.gz -div $maxval $out/COtonewfar_T1logptrack_$patient.nii.gz
+
+#set path for newfar V1 to DMN log paths to go and perform log function on newfar paths
+out=$pathout/DMNtonewfar_logprob
+in=$pathout/DMNtonewfar_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/DMNtonewfar_T1_$patient.nii.gz -log $out/DMNtonewfar_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/DMNtonewfar_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/DMNtonewfar_T1log_$patient.nii.gz -div $maxval $out/DMNtonewfar_T1logptrack_$patient.nii.gz
+
+### mid paths ###
+#set path for mid V1 to FP log paths to go and perform log function on mid paths
+out=$pathout/FPtomid_logprob
+in=$pathout/FPtomid_instruct
+
+#make new image of log values
+cd $in
+fslmaths FPtomid_T1_$patient.nii.gz -log $out/FPtomid_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/FPtomid_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/FPtomid_T1log_$patient.nii.gz -div $maxval $out/FPtomid_T1logptrack_$patient.nii.gz
+
+#set path for mid V1 to CO log paths to go and perform log function on mid paths
+out=$pathout/COtomid_logprob
+in=$pathout/COtomid_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/COtomid_T1_$patient.nii.gz -log $out/COtomid_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/COtomid_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/COtomid_T1log_$patient.nii.gz -div $maxval $out/COtomid_T1logptrack_$patient.nii.gz
+
+#set path for mid V1 to DMN log paths to go and perform log function on mid paths
+out=$pathout/DMNtomid_logprob
+in=$pathout/DMNtomid_instruct
+
+#make new image of log values
+cd $in
+fslmaths $in/DMNtomid_T1_$patient.nii.gz -log $out/DMNtomid_T1log_$patient.nii.gz
+#find max log value 
+fslstats $out/DMNtomid_T1log_$patient.nii.gz -R > $out/max_$patient.txt
+maxval=`cat $out/max_$patient.txt`
+echo $maxval
+maxval=$(printf "$maxval" | cut -c 10-)
+echo $maxval
+#divide by max value
+fslmaths $out/DMNtomid_T1log_$patient.nii.gz -div $maxval $out/DMNtomid_T1logptrack_$patient.nii.gz
+
+
+done

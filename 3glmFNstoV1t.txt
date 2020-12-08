@@ -1,0 +1,624 @@
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/lh.paired-diff.FP_cf.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/lh.paired-diff.FP_cf.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/lh.paired-diff.FP_cf.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.247333 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.493696, ar1std=0.467380, gstd=0.481693, fwhm=1.134301
+Writing results
+  osgm
+    maxvox sig=1e+10  F=376.746  at  index 3 0 0    seed=1587640505
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/rh.paired-diff.FP_cf.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cfrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/rh.paired-diff.FP_cf.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cfrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cfrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cf/rh.paired-diff.FP_cf.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cfrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cfrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.2465 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.523403, ar1std=0.466437, gstd=0.501565, fwhm=1.181096
+Writing results
+  osgm
+    maxvox sig=1e+10  F=323.033  at  index 3 0 0    seed=1587026178
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/lh.paired-diff.FP_cm.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmlh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/lh.paired-diff.FP_cm.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmlh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmlh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/lh.paired-diff.FP_cm.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmlh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmlh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.245833 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.489358, ar1std=0.464664, gstd=0.478709, fwhm=1.127274
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=486.19  at  index 35 0 0    seed=1587107019
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/rh.paired-diff.FP_cm.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/rh.paired-diff.FP_cm.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_FP_cm/rh.paired-diff.FP_cm.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cmrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.2465 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.519349, ar1std=0.463601, gstd=0.498580, fwhm=1.174066
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=691.549  at  index 63 0 0    seed=1587230860
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/lh.paired-diff.DMN_fc.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fclh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/lh.paired-diff.DMN_fc.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fclh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fclh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/lh.paired-diff.DMN_fc.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fclh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fclh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.247017 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.611885, ar1std=0.450209, gstd=0.577415, fwhm=1.359709
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=327.061  at  index 3 0 0    seed=1587506554
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/rh.paired-diff.DMN_fc.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fcrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/rh.paired-diff.DMN_fc.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fcrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fcrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fc/rh.paired-diff.DMN_fc.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fcrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fcrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.24885 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.566092, ar1std=0.459097, gstd=0.535006, fwhm=1.259844
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=383.441  at  index 13 0 0    seed=1586893071
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/lh.paired-diff.DMN_fm.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmlh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/lh.paired-diff.DMN_fm.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmlh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmlh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/lh.paired-diff.DMN_fm.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmlh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmlh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.24885 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.610033, ar1std=0.449149, gstd=0.575642, fwhm=1.355533
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=572.874  at  index 3 0 0    seed=1587380155
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/rh.paired-diff.DMN_fm.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/rh.paired-diff.DMN_fm.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_DMN_fm/rh.paired-diff.DMN_fm.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_DMN_fmrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.25 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.565866, ar1std=0.458261, gstd=0.534819, fwhm=1.259403
+Writing results
+  osgm
+    maxvox sig=-1e+10  F=335.958  at  index 11 0 0    seed=1586704595
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/lh.paired-diff.CO_mc.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mclh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/lh.paired-diff.CO_mc.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mclh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mclh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/lh.paired-diff.CO_mc.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mclh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mclh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.247733 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.517888, ar1std=0.459990, gstd=0.498897, fwhm=1.174812
+Writing results
+  osgm
+    maxvox sig=1e+10  F=521.702  at  index 74 0 0    seed=1587217804
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/rh.paired-diff.CO_mc.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mcrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/rh.paired-diff.CO_mc.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mcrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mcrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mc/rh.paired-diff.CO_mc.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mcrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mcrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.248483 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.528045, ar1std=0.459227, gstd=0.505020, fwhm=1.189232
+Writing results
+  osgm
+    maxvox sig=1e+10  F=429.359  at  index 59 0 0    seed=1587456677
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/lh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65416.984375
+AvgVtxArea       0.399269
+AvgVtxDist       0.721953
+StdVtxDist       0.195470
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/lh.paired-diff.CO_mf.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage lh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mflh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/lh.paired-diff.CO_mf.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/lh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mflh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mflh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/lh.paired-diff.CO_mf.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mflh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149955 points in label.
+Found 149955 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mflh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74612.583051
+DOF = 785
+Starting fit and test
+Fit completed in 0.247 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.518718, ar1std=0.460552, gstd=0.499505, fwhm=1.176244
+Writing results
+  osgm
+    maxvox sig=1e+10  F=451.588  at  index 4 0 0    seed=1586882405
+mri_glmfit done
+gdfRead(): reading /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+INFO: gd2mtx_method is dods
+Reading source surface /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/surf/rh.white
+Number of vertices 163842
+Number of faces    327680
+Total area         65020.839844
+AvgVtxArea       0.396851
+AvgVtxDist       0.717994
+StdVtxDist       0.193566
+
+$Id: mri_glmfit.c,v 1.241.2.4 2016/12/08 22:02:40 zkaufman Exp $
+cwd /data/project/vislab/a/HCP_diff_Sara/Scripts/diff_analysis/surface_comparisons/FNstoV1t
+cmdline mri_glmfit.bin --y /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/rh.paired-diff.CO_mf.sm02.mgh --fsgd /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt --osgm --surf fsaverage rh --glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mfrh --save-yhat --no-prune 
+sysname  Linux
+hostname c0020
+machine  x86_64
+user     snolin
+FixVertexAreaFlag = 1
+UseMaskWithSmoothing     1
+OneSampleGroupMean 1
+y    /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/rh.paired-diff.CO_mf.sm02.mgh
+logyflag 0
+usedti  0
+FSGD /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/FSGD.txt
+labelmask  /data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy/fsaverage/label/rh.cortex.label
+maskinv 0
+glmdir /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mfrh
+IllCondOK 0
+ReScaleX 1
+DoFFx 0
+Creating output directory /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mfrh
+Loading y from /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/preproc_CO_mf/rh.paired-diff.CO_mf.sm02.mgh
+   ... done reading.
+INFO: gd2mtx_method is dods
+Saving design matrix to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mfrh/Xg.dat
+Computing normalized matrix
+Normalized matrix condition is 1
+Matrix condition is 1
+Found 149926 points in label.
+Found 149926 voxels in mask
+Saving mask to /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_CO_mfrh/mask.mgh
+Reshaping mriglm->mask...
+search space = 74490.844410
+DOF = 785
+Starting fit and test
+Fit completed in 0.2466 minutes
+Computing spatial AR1 on surface
+Residual: ar1mn=0.528626, ar1std=0.460620, gstd=0.505456, fwhm=1.190259
+Writing results
+  osgm
+    maxvox sig=1e+10  F=696.071  at  index 7 0 0    seed=1587349298
+mri_glmfit done

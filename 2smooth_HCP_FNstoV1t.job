@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=50000
+#SBATCH --partition=medium
+#SBATCH --time=48:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=smooth
+#SBATCH --output=smoothallFNstoV1t.txt
+
+recon=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$recon 
+export SUBJECTS_DIR
+
+#define mris_preproc output folder
+ana=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis
+
+#FP central versus far
+#left hemi
+data=$ana/preproc_FP_cf
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.FP_cf.mgh --tval $data/lh.paired-diff.FP_cf.sm02.mgh
+
+#right hemi
+data=$ana/preproc_FP_cf
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.FP_cf.mgh --tval $data/rh.paired-diff.FP_cf.sm02.mgh
+
+
+######################################FP central versus mid
+#left hemi
+data=$ana/preproc_FP_cm
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.FP_cm.mgh --tval $data/lh.paired-diff.FP_cm.sm02.mgh
+
+#right hemi
+data=$ana/preproc_FP_cm
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.FP_cm.mgh --tval $data/rh.paired-diff.FP_cm.sm02.mgh
+
+#CO mid versus central
+#left hemi
+data=$ana/preproc_CO_mc
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.CO_mc.mgh --tval $data/lh.paired-diff.CO_mc.sm02.mgh
+
+#right hemi
+data=$ana/preproc_CO_mc
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.CO_mc.mgh --tval $data/rh.paired-diff.CO_mc.sm02.mgh
+
+#CO mid versus far
+#left hemi
+data=$ana/preproc_CO_mf
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.CO_mf.mgh --tval $data/lh.paired-diff.CO_mf.sm02.mgh
+
+#right hemi
+data=$ana/preproc_CO_mf
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.CO_mf.mgh --tval $data/rh.paired-diff.CO_mf.sm02.mgh
+
+#DMN far versus central
+#left hemi
+data=$ana/preproc_DMN_fc
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.DMN_fc.mgh --tval $data/lh.paired-diff.DMN_fc.sm02.mgh
+
+#right hemi
+data=$ana/preproc_DMN_fc
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.DMN_fc.mgh --tval $data/rh.paired-diff.DMN_fc.sm02.mgh
+
+#DMN far versus mid
+#left hemi
+data=$ana/preproc_DMN_fm
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.DMN_fm.mgh --tval $data/lh.paired-diff.DMN_fm.sm02.mgh
+
+#right hemi
+data=$ana/preproc_DMN_fm
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.DMN_fm.mgh --tval $data/rh.paired-diff.DMN_fm.sm02.mgh
+
+#CO central versus far
+#left hemi
+data=$ana/preproc_CO_cf
+
+mri_surf2surf --s fsaverage --hemi lh --fwhm 2 --sval $data/lh.paired-diff.CO_cf.mgh --tval $data/lh.paired-diff.CO_cf.sm02.mgh
+
+#right hemi
+data=$ana/preproc_CO_cf
+
+mri_surf2surf --s fsaverage --hemi rh --fwhm 2 --sval $data/rh.paired-diff.CO_cf.mgh --tval $data/rh.paired-diff.CO_cf.sm02.mgh
+
+

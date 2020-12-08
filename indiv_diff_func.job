@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=8000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=subdiff
+#SBATCH --output=subdiff.txt
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+
+##FP newcentral versus newfar##
+in=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data
+cd $in
+mkdir pairedsurfs
+out=$in/pairedsurfs
+
+
+#take difference of subject's newcentral minus newfar 
+newcentral=$in/central_surf
+newfar=$in/far_surf
+cd $out
+mkdir FP_cvf
+for patient in `ls -1 $diff`
+do 
+mris_calc --output $out/FP_cvf/lh.FPcfdiff_$patient.mgh $newcentral/fsavg_centrallhsurf_$patient.mgh sub $newfar/fsavg_farlhsurf_$patient.mgh 
+mris_calc --output $out/FP_cvf/rh.FPcfdiff_$patient.mgh $newcentral/fsavg_centralrhsurf_$patient.mgh sub $newfar/fsavg_farrhsurf_$patient.mgh
+done
+
+#DMN
+#take difference of subject's newfar minus newcentral 
+newcentral=$in/central_surf
+newfar=$in/far_surf
+cd $out
+mkdir DMN_fvc
+for patient in `ls -1 $diff`
+do 
+mris_calc --output $out/DMN_fvc/lh.DMNfcdiff_$patient.mgh $newfar/fsavg_farlhsurf_$patient.mgh sub $newcentral/fsavg_centrallhsurf_$patient.mgh
+mris_calc --output $out/DMN_fvc/rh.DMNfcdiff_$patient.mgh $newfar/fsavg_farrhsurf_$patient.mgh sub $newcentral/fsavg_centralrhsurf_$patient.mgh 
+done
+
+#CO
+#take difference of subject's mid minus newfar 
+mid=$in/mid_surf
+newfar=$in/far_surf
+cd $out
+mkdir CO_mvf
+for patient in `ls -1 $diff`
+do 
+mris_calc --output $out/CO_mvf/lh.COmfdiff_$patient.mgh $mid/fsavg_midlhsurf_$patient.mgh sub $newfar/fsavg_farlhsurf_$patient.mgh 
+mris_calc --output $out/CO_mvf/rh.COmfdiff_$patient.mgh $mid/fsavg_midrhsurf_$patient.mgh sub $newfar/fsavg_farrhsurf_$patient.mgh
+done
+
+#take difference of subject's mid minus newcentral
+mid=$in/mid_surf
+newcentral=$in/central_surf
+cd $out
+mkdir CO_mvc
+for patient in `ls -1 $diff`
+do 
+mris_calc --output $out/CO_mvc/lh.COmcdiff_$patient.mgh $mid/fsavg_midlhsurf_$patient.mgh sub $newcentral/fsavg_centrallhsurf_$patient.mgh 
+mris_calc --output $out/CO_mvc/rh.COmcdiff_$patient.mgh $mid/fsavg_midrhsurf_$patient.mgh sub $newcentral/fsavg_centralrhsurf_$patient.mgh
+done
+
+#take difference of subject's central minus far
+newfar=$in/far_surf
+newcentral=$in/central_surf
+cd $out
+mkdir CO_cvf
+for patient in `ls -1 $diff`
+do 
+mris_calc --output $out/CO_cvf/lh.COcfdiff_$patient.mgh $newcentral/fsavg_centrallhsurf_$patient.mgh sub $newfar/fsavg_farlhsurf_$patient.mgh 
+mris_calc --output $out/CO_cvf/rh.COcfdiff_$patient.mgh $newcentral/fsavg_centralrhsurf_$patient.mgh sub $newfar/fsavg_farrhsurf_$patient.mgh
+done

@@ -1,0 +1,113 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=50000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=glm
+#SBATCH --output=3glmFNstoV1t.txt
+
+recon=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$recon 
+export SUBJECTS_DIR
+
+#define mris_preproc output folder
+ana=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis
+
+#FP central versus far
+#left hemi
+data=$ana/preproc_FP_cf
+out=$ana/glmdir_FP_cflh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.FP_cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_FP_cf
+out=$ana/glmdir_FP_cfrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.FP_cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+######################3#FP central versus mid
+#left hemi
+data=$ana/preproc_FP_cm
+out=$ana/glmdir_FP_cmlh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.FP_cm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_FP_cm
+out=$ana/glmdir_FP_cmrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.FP_cm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+#DMN far versus central
+#left hemi
+data=$ana/preproc_DMN_fc
+out=$ana/glmdir_DMN_fclh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.DMN_fc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_DMN_fc
+out=$ana/glmdir_DMN_fcrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.DMN_fc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+##########################DMN far versus mid
+#left hemi
+data=$ana/preproc_DMN_fm
+out=$ana/glmdir_DMN_fmlh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.DMN_fm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_DMN_fm
+out=$ana/glmdir_DMN_fmrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.DMN_fm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+
+#CO mid versus central
+#left hemi
+data=$ana/preproc_CO_mc
+out=$ana/glmdir_CO_mclh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.CO_mc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_CO_mc
+out=$ana/glmdir_CO_mcrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.CO_mc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+#CO mid versus far
+#left hemi
+data=$ana/preproc_CO_mf
+out=$ana/glmdir_CO_mflh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.CO_mf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_CO_mf
+out=$ana/glmdir_CO_mfrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.CO_mf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+#CO central versus far
+#left hemi
+data=$ana/preproc_CO_cf
+out=$ana/glmdir_CO_cflh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.CO_cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_CO_cf
+out=$ana/glmdir_CO_cfrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.CO_cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+

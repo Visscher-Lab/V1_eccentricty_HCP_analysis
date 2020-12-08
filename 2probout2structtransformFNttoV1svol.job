@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=probreg_submitjob
+#SBATCH --output=2FNstoV1ttruct.txt
+
+#This script resamples the output of probtrackx into the subject's anatomical space using Freesurfer
+#Prior run of BBR to register anatomoical to diffusion space is required 
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/jobs_resample
+
+#set location for output of resampled probtrackx paths
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+cd $outp
+mkdir COtonewcentral_instruct
+mkdir DMNtonewcentral_instruct
+mkdir FPtonewcentral_instruct
+mkdir COtonewfar_instruct
+mkdir DMNtonewfar_instruct
+mkdir FPtonewfar_instruct
+mkdir COtomid_instruct
+mkdir DMNtomid_instruct
+mkdir FPtomid_instruct
+#set location for where registration matricies (output of BBR) exist
+bbr=/data/project/vislab/a/HCP_diff_Sara/HCP_registration_T12diffedit
+
+#set location for where probtrackx paths that are going to be resampled are located
+prb=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+for patient in `ls -1 $diff`
+do 
+echo "#!/bin/bash
+#
+#SBATCH --time=2:00:00
+#SBATCH --job-name=FNstoV1tresample$patient
+#SBATCH --partition=express
+#SBATCH --mem-per-cpu=6000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/probFNstoV1tresample$patient.txt
+#SBATCH --ntasks=1
+
+#transform COtonewcentral paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/COtonewcentral/$patient/seeds_to_newcentralvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/COtonewcentral_instruct/COtonewcentral_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform DMNtonewcentral paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/DMNtonewcentral/$patient/seeds_to_newcentralvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/DMNtonewcentral_instruct/DMNtonewcentral_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform FPtonewcentral paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/FPtonewcentral/$patient/seeds_to_newcentralvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/FPtonewcentral_instruct/FPtonewcentral_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform COtomid paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/COtomid/$patient/seeds_to_midvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/COtomid_instruct/COtomid_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform DMNtomid paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/DMNtomid/$patient/seeds_to_midvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/DMNtomid_instruct/DMNtomid_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform FPtomid paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/FPtomid/$patient/seeds_to_midvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/FPtomid_instruct/FPtomid_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform COtonewfar paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/COtonewfar/$patient/seeds_to_newfarvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/COtonewfar_instruct/COtonewfar_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform DMNtonewfar paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/DMNtonewfar/$patient/seeds_to_newfarvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/DMNtonewfar_instruct/DMNtonewfar_T1_$patient.nii.gz --nearest --rot 0 0 0
+
+#transform FPtonewfar paths into structural space
+mri_vol2vol --targ $diff/$patient/mri/orig.nii.gz --mov $prb/FPtonewfar/$patient/seeds_to_newfarvol_diffROI.nii.gz --reg $bbr/$patient/register_edit.dat --o $outp/FPtonewfar_instruct/FPtonewfar_T1_$patient.nii.gz --nearest --rot 0 0 0" > $jobs/$patient.job
+
+sbatch $jobs/$patient.job
+
+done
+

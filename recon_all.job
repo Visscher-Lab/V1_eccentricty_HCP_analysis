@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=1000
+#SBATCH --partition=express
+#SBATCH --time=10:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=reconall_submitjob
+#SBATCH --output=reconallsubmitjob.txt
+
+scratch=/data/user/snolin
+jobs=$scratch/jobs
+sub=$scratch/subjects
+subraw=$scratch/HCP_struct_unzip_preproc
+
+function run-recon-all() {
+cd $scratch
+#create submit script for each patient in the subjects directory
+for patient in `ls -1 $subraw`
+do
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$sub 
+export SUBJECTS_DIR
+cat > $jobs/recon-all-$patient.sh <<EOF
+#!/bin/bash
+#
+#SBATCH --ntasks=4
+#SBATCH --mem-per-cpu=9000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=reconall_$patient
+#SBATCH --output=reconall.txt
+
+recon-all -sd $SUBJECTS_DIR  -s $patient -i $subraw/$patient/T1w/T1w_acpc_dc.nii -all
+
+sleep 15
+
+EOF
+done
+
+#submit job script for each patient in the jobs directory to the cluster
+pushd $jobs
+for script in `ls -1`
+do
+echo "submitting job $script"
+sbatch $script
+done
+popd
+}
+run-recon-all

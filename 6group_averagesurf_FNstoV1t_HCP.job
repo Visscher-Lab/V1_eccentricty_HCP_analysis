@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=smooth_submitjob
+#SBATCH --output=6grpavgsubmitjobFNstoV1t.txt
+
+#This scripts group averages the outputs that are already in fsaverage space and smoothed
+
+#set location for surface overlays to average
+prob=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#set location for where group average outputs will go
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/group_averages
+mkdir $outp
+
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#mri_concat filename* --o output --mean
+
+### newcentral ####
+#average newcentral to FP surf 
+cd $prob/FPtonewcentral_surf
+mri_concat smooth*rh* --o $outp/FPtonewcentralrh.mgh --mean
+mri_concat smooth*lh* --o $outp/FPtonewcentrallh.mgh --mean
+
+#average newcentral to CO surf 
+cd $prob/COtonewcentral_surf
+mri_concat smooth*rh* --o $outp/COtonewcentralrh.mgh --mean
+mri_concat smooth*lh* --o $outp/COtonewcentrallh.mgh --mean
+
+#average newcentral to DMN surf 
+cd $prob/DMNtonewcentral_surf
+mri_concat smooth*rh* --o $outp/DMNtonewcentralrh.mgh --mean
+mri_concat smooth*lh* --o $outp/DMNtonewcentrallh.mgh --mean
+
+### mid ####
+#average mid to FP surf 
+cd $prob/FPtomid_surf
+mri_concat smooth*rh* --o $outp/FPtomidrh.mgh --mean
+mri_concat smooth*lh* --o $outp/FPtomidlh.mgh --mean
+
+#average mid to CO surf 
+cd $prob/COtomid_surf
+mri_concat smooth*rh* --o $outp/COtomidrh.mgh --mean
+mri_concat smooth*lh* --o $outp/COtomidlh.mgh --mean
+
+#average mid to DMN surf 
+cd $prob/DMNtomid_surf
+mri_concat smooth*rh* --o $outp/DMNtomidrh.mgh --mean
+mri_concat smooth*lh* --o $outp/DMNtomidlh.mgh --mean
+
+### newfar ####
+#average newfar to FP surf 
+cd $prob/FPtonewfar_surf
+mri_concat smooth*rh* --o $outp/FPtonewfarrh.mgh --mean
+mri_concat smooth*lh* --o $outp/FPtonewfarlh.mgh --mean
+
+#average newfar to CO surf 
+cd $prob/COtonewfar_surf
+mri_concat smooth*rh* --o $outp/COtonewfarrh.mgh --mean
+mri_concat smooth*lh* --o $outp/COtonewfarlh.mgh --mean
+
+#average newfar to DMN surf 
+cd $prob/DMNtonewfar_surf
+mri_concat smooth*rh* --o $outp/DMNtonewfarrh.mgh --mean
+mri_concat smooth*lh* --o $outp/DMNtonewfarlh.mgh --mean

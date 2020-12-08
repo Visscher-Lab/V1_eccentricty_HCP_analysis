@@ -1,0 +1,228 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=
+#SBATCH --output=
+
+#structural
+sigouts="/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis"
+
+#FP
+#location of group data to create group average
+avg=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/pairedsurfs
+cd $avg/FP_cvf
+mri_concat *rh* --o $avg/FP_cvfrh.mgh --mean
+mri_concat *lh* --o $avg/FP_cvflh.mgh --mean
+
+#location of statistical outputs
+stats=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis
+cd $stats/glmdir_FP_cfrh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+cd $stats/glmdir_FP_cflh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+
+#make functional networks into surfaces
+label=/data/project/vislab/a/HCP_diff_Sara/fsaverage/label/Yeolabels
+vols=/data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/Yeo_vollabels
+surfs=/data/project/vislab/a/HCP_diff_Sara/fsaverage/surf/Yeo_surflabels
+#FPlh
+mri_label2vol --label $label/lh.7Networks_6.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/lh.7Networks_6.nii 
+mri_vol2surf --src $vols/lh.7Networks_6.nii --out $surfs/lh.7Networks_6.mgh --regheader fsaverage --hemi lh
+
+#FPrh
+mri_label2vol --label $label/rh.7Networks_6.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/rh.7Networks_6.nii 
+mri_vol2surf --src $vols/rh.7Networks_6.nii --out $surfs/rh.7Networks_6.mgh --regheader fsaverage --hemi rh
+
+
+# combine all masks into a mega mask
+cd $avg
+mris_calc $surfs/rh.7Networks_6.mgh add $stats/glmdir_FP_cfrh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o sig_FN_maskrh.mgh --min 2
+# mask group average with the mask
+mri_mask $avg/FP_cvfrh.mgh $avg/sig_FN_maskrh.mgh $avg/FP_cvfrhgrpavg_sig_FN_masked.mgh
+
+# combine all masks into a mega mask
+cd $avg
+mris_calc $surfs/lh.7Networks_6.mgh add $stats/glmdir_FP_cflh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o sig_FN_masklh.mgh --min 2
+# mask group average with the mega mask
+mri_mask $avg/FP_cvflh.mgh $avg/sig_FN_masklh.mgh $avg/FP_cvflhgrpavg_sig_FN_masked.mgh
+
+#CO
+#location of group data to create group average
+avg=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/pairedsurfs
+cd $avg/CO_cvf
+mri_concat *rh* --o $avg/CO_cvfrh.mgh --mean
+mri_concat *lh* --o $avg/CO_cvflh.mgh --mean
+
+#location of statistical outputs
+stats=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis
+cd $stats/glmdir_CO_cfrh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+cd $stats/glmdir_CO_cflh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+#make functional networks into surfaces
+label=/data/project/vislab/a/HCP_diff_Sara/fsaverage/label/Yeolabels
+vols=/data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/Yeo_vollabels
+surfs=/data/project/vislab/a/HCP_diff_Sara/fsaverage/surf/Yeo_surflabels
+#COlh
+mri_label2vol --label $label/lh.7Networks_4.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/lh.7Networks_4.nii 
+mri_vol2surf --src $vols/lh.7Networks_4.nii --out $surfs/lh.7Networks_4.mgh --regheader fsaverage --hemi lh
+
+#COrh
+mri_label2vol --label $label/rh.7Networks_4.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/rh.7Networks_4.nii 
+mri_vol2surf --src $vols/rh.7Networks_4.nii --out $surfs/rh.7Networks_4.mgh --regheader fsaverage --hemi rh
+
+cd $avg
+# combine all masks into a mega mask
+mris_calc $surfs/rh.7Networks_4.mgh add $stats/glmdir_CO_cfrh/osgm/zmask.mgz
+mris_calc out.mgz add $stats/glmdir_CO_cfrh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o mega_z_sig_FN_maskrh.mgh --min 3
+# mask group average with the mega mask
+mri_mask $avg/CO_cvfrh.mgh $avg/mega_z_sig_FN_maskrh.mgh $avg/CO_cvfrhgrpavg_z_sig_FN_masked.mgh
+
+# combine all masks into a mega mask
+cd $avg
+mris_calc $surfs/lh.7Networks_4.mgh add $stats/glmdir_CO_cflh/osgm/zmask.mgz
+mris_calc out.mgz add $stats/glmdir_CO_cflh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o mega_z_sig_FN_masklh.mgh --min 3
+# mask group average with the mega mask
+mri_mask $avg/CO_cvflh.mgh $avg/mega_z_sig_FN_masklh.mgh $avg/CO_cvflhgrpavg_z_sig_FN_masked.mgh
+
+
+#DMN
+#location of group data to create group average
+avg=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/pairedsurfs
+cd $avg/DMN_fvc
+mri_concat *rh* --o $avg/DMN_fvcrh.mgh --mean
+mri_concat *lh* --o $avg/DMN_fvclh.mgh --mean
+
+#location of statistical outputs
+stats=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis
+cd $stats/glmdir_DMN_fcrh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+cd $stats/glmdir_DMN_fclh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i z.mgh --o zposmask.mgh --min 3 
+mri_binarize --i z.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+#make functional networks into surfaces
+label=/data/project/vislab/a/HCP_diff_Sara/fsaverage/label/Yeolabels
+vols=/data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/Yeo_vollabels
+surfs=/data/project/vislab/a/HCP_diff_Sara/fsaverage/surf/Yeo_surflabels
+#DMNlh
+mri_label2vol --label $label/lh.7Networks_7.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/lh.7Networks_7.nii 
+mri_vol2surf --src $vols/lh.7Networks_7.nii --out $surfs/lh.7Networks_7.mgh --regheader fsaverage --hemi lh
+
+#DMNrh
+mri_label2vol --label $label/rh.7Networks_7.label --temp /data/project/vislab/a/HCP_diff_Sara/fsaverage/mri/orig.mgz --identity --o $vols/rh.7Networks_7.nii 
+mri_vol2surf --src $vols/rh.7Networks_7.nii --out $surfs/rh.7Networks_7.mgh --regheader fsaverage --hemi rh
+
+cd $avg
+# combine all masks into a mega mask
+mris_calc $surfs/rh.7Networks_7.mgh add $stats/glmdir_DMN_fcrh/osgm/zmask.mgz
+mris_calc out.mgz add $stats/glmdir_DMN_fcrh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o mega_z_sig_FN_maskrh.mgh --min 3
+# mask group average with the mega mask
+mri_mask $avg/DMN_fvcrh.mgh $avg/mega_z_sig_FN_maskrh.mgh $avg/DMN_fvcrhgrpavg_z_sig_FN_masked.mgh
+
+# combine all masks into a mega mask
+cd $avg
+mris_calc $surfs/lh.7Networks_7.mgh add $stats/glmdir_DMN_fclh/osgm/zmask.mgz
+mris_calc out.mgz add $stats/glmdir_DMN_fclh/osgm/sigmask.mgh
+mri_binarize --i out.mgz --o mega_z_sig_FN_masklh.mgh --min 3
+# mask group average with the mega mask
+mri_mask $avg/DMN_fvclh.mgh $avg/mega_z_sig_FN_masklh.mgh $avg/DMN_fvclhgrpavg_z_sig_FN_masked.mgh
+
+#functional
+sigouts="/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data/surface_analysis"
+
+#location of group data to create group average
+avg=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data/pairedsurfs
+cd $avg/FP_cvf
+mri_concat *rh* --o $avg/FP_cvfrh.mgh --mean
+mri_concat *lh* --o $avg/FP_cvflh.mgh --mean
+
+#location of statistical outputs
+stats=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data/surface_analysis
+cd $stats/glmdir_cfrh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i zcfrh.mgh --o zposmask.mgh --min 3 
+mri_binarize --i zcfrh.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+cd $stats/glmdir_cflh/osgm
+#mask significance surface with significant pvalues (p>.001)
+mri_binarize --i sig.mgh --abs --min 6 --o sigmask.mgh
+
+#binarize z outputs to create a mask (z>3)
+mri_binarize --i zcflh.mgh --o zposmask.mgh --min 3 
+mri_binarize --i zcflh.mgh --o znegmask.mgh --max -3 
+mris_calc zposmask.mgh add znegmask.mgh
+mv out.mgz zmask.mgz
+
+cd $avg
+# mask group average with the sig mask
+mri_mask $avg/FP_cvfrh.mgh $stats/glmdir_cfrh/osgm/sigmask.mgh $avg/FP_cvfrhgrpavg_z_sig_masked.mgh
+
+
+cd $avg
+# mask group average with the sig mask
+mri_mask $avg/FP_cvflh.mgh $stats/glmdir_cflh/osgm/sigmask.mgh $avg/FP_cvflhgrpavg_z_sig_masked.mgh
+
+
+

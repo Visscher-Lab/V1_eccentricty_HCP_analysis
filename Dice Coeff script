@@ -1,0 +1,1 @@
+mri_compute_overlap -a -total -l /data/project/vislab/a/HCP_diff_Sara/Dice_Co/DC_out.txt /data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data/surface_analysis/glmdir_cflh/osgm/central_greaterthan_far_maskedFPcflh.mgz /data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob/surface_analysis/glmdir_FP_cflh/osgm/central_greaterthan_far_maskedFPcflh.mgz

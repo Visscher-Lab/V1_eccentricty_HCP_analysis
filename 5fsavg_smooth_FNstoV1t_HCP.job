@@ -1,0 +1,123 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=smooth_submitjob
+#SBATCH --output=5smoothfssubmitjobecctermFNstoV1t.txt
+
+#This scripts puts the probtrackx outputs on the fsaverage surface and smooths 2mm
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/jobs_smooth
+
+#set location for output for surface overlays
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#set location for where probtrackx outputs in fsaverage space and smoothed are
+prob=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+
+for patient in `ls -1 $diff`
+do 
+echo "#!/bin/bash
+#
+#SBATCH --time=2:00:00
+#SBATCH --job-name=vol2surf$patient
+#SBATCH --partition=express
+#SBATCH --mem-per-cpu=8000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/vol2surf_$patient.txt
+#SBATCH --ntasks=1
+
+SUBJECTS_DIR=$diff
+#mri_surf2surf --srcsubject subid --srcsurfval sourcefile --trgsubject subid --trgsurfval output --hemi lh/rh --fwhm-trg 2
+
+### newcentral ####
+
+#put newcentral to FP surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtonewcentral_surf/FPtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewcentral_surf/fsavg_FPtonewcentralrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtonewcentral_surf/fsavg_FPtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewcentral_surf/smooth2fsavg_FPtonewcentralrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtonewcentral_surf/FPtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewcentral_surf/fsavg_FPtonewcentrallhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtonewcentral_surf/fsavg_FPtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewcentral_surf/smooth2fsavg_FPtonewcentrallhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put newcentral to CO surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtonewcentral_surf/COtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewcentral_surf/fsavg_COtonewcentralrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtonewcentral_surf/fsavg_COtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewcentral_surf/smooth2fsavg_COtonewcentralrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtonewcentral_surf/COtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewcentral_surf/fsavg_COtonewcentrallhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtonewcentral_surf/fsavg_COtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewcentral_surf/smooth2fsavg_COtonewcentrallhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put newcentral to DMN surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtonewcentral_surf/DMNtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewcentral_surf/fsavg_DMNtonewcentralrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtonewcentral_surf/fsavg_DMNtonewcentralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewcentral_surf/smooth2fsavg_DMNtonewcentralrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtonewcentral_surf/DMNtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewcentral_surf/fsavg_DMNtonewcentrallhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtonewcentral_surf/fsavg_DMNtonewcentrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewcentral_surf/smooth2fsavg_DMNtonewcentrallhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+### mid ####
+
+#put mid to FP surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtomid_surf/FPtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtomid_surf/fsavg_FPtomidrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtomid_surf/fsavg_FPtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtomid_surf/smooth2fsavg_FPtomidrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtomid_surf/FPtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtomid_surf/fsavg_FPtomidlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtomid_surf/fsavg_FPtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtomid_surf/smooth2fsavg_FPtomidlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put mid to CO surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtomid_surf/COtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtomid_surf/fsavg_COtomidrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtomid_surf/fsavg_COtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtomid_surf/smooth2fsavg_COtomidrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtomid_surf/COtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtomid_surf/fsavg_COtomidlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtomid_surf/fsavg_COtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtomid_surf/smooth2fsavg_COtomidlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put mid to DMN surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtomid_surf/DMNtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtomid_surf/fsavg_DMNtomidrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtomid_surf/fsavg_DMNtomidrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtomid_surf/smooth2fsavg_DMNtomidrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtomid_surf/DMNtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtomid_surf/fsavg_DMNtomidlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtomid_surf/fsavg_DMNtomidlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtomid_surf/smooth2fsavg_DMNtomidlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+### newfar ####
+
+#put newfar to FP surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtonewfar_surf/FPtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewfar_surf/fsavg_FPtonewfarrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtonewfar_surf/fsavg_FPtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewfar_surf/smooth2fsavg_FPtonewfarrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/FPtonewfar_surf/FPtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewfar_surf/fsavg_FPtonewfarlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/FPtonewfar_surf/fsavg_FPtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/FPtonewfar_surf/smooth2fsavg_FPtonewfarlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put newfar to CO surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtonewfar_surf/COtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewfar_surf/fsavg_COtonewfarrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtonewfar_surf/fsavg_COtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewfar_surf/smooth2fsavg_COtonewfarrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/COtonewfar_surf/COtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewfar_surf/fsavg_COtonewfarlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/COtonewfar_surf/fsavg_COtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/COtonewfar_surf/smooth2fsavg_COtonewfarlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+
+#put newfar to DMN surf into fsaverage and smooth
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtonewfar_surf/DMNtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewfar_surf/fsavg_DMNtonewfarrhsurf_$patient.mgh --hemi rh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtonewfar_surf/fsavg_DMNtonewfarrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewfar_surf/smooth2fsavg_DMNtonewfarrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/DMNtonewfar_surf/DMNtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewfar_surf/fsavg_DMNtonewfarlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/DMNtonewfar_surf/fsavg_DMNtonewfarlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/DMNtonewfar_surf/smooth2fsavg_DMNtonewfarlhsurf_$patient.mgh --hemi lh --fwhm-trg 2" > $jobs/$patient.job
+
+sbatch $jobs/$patient.job
+
+done

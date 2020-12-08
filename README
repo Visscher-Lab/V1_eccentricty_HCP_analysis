@@ -1,0 +1,60 @@
+Scripts written by Sara Sims (snolin@uab.edu)
+Please copy all scripts into your own folders to edit. Visually inspect every step! Don't trust the computer to do it right. 
+I generally use "patient" to reference subjects. 
+
+#Registration
+BBR registers Diffusion space to freesurfer anatomical space (this needs to be checked using tksurfer gui)
+
+#Freesufer preprocessing
+reconall supplies all standard freesurfer outputs
+
+#Making Labels (all labels should be visually inspected as errors are common)
+color_tables is just for referencing when putting labels into white matter so don't edit
+V1_labeltoindividual
+	labels_fsaverage contains all the V1 labels in fsaverage space that need to be in the fsaverage label folder before running V1_label_to_label.m
+	V1_label_to_label.m puts V1 segment ROI on the individual
+	V1label.job runs the bash script of V1_label_to_label.m through matlab if desired. 
+	V1_1.m also puts the first segment of V1 onto the individual, which was not originally included in V1_label_to_label.m
+FunctionalNetworks_labeltoindividual
+	Yeolabels contains all the network labels in fsaverage space that need to be in the fsaverage label folder before running YeoParcelTransfer.m
+	YeoParcelTransfer.m puts network labels on the individual
+	Yeosinglesub.m puts network labels on the individual but for just on specified subject, if needed. 
+movelabelinto_whitematter (this is where errors are most likely)
+	barlabelsV1cortical2wm_HCP.job puts bars #2-8 of V1 into the white matter and then to diffusion space, singlesubject version does it on one person	
+	1V1_intowm.job puts bar #1 of V1 into the white matter and then to diffusion space
+	V1segmentlabel_cortical2wm puts central, mid, and far V1 into white matter and then to diffusion space
+	label_V1cortical2wmnewfar67_HCP.job creates a smaller version of the far label with  just bars #6&7
+	label_FNcortical2wm_HCP.job puts Yeo networks into the white matter and then to diffusion space, singlesubject version does it on one person
+labelstovolumes_notinwhitematter
+	labelFNcorticaltovol_HCP.job puts Yeo networks in the cortical ribbon/grey matter as a volume
+addinglabelstogether
+	add1tocentralV1.job add bar #1 to the central (2&3) ROI
+	allFNROI.job adds together all the networks into one ROI
+	wholebrainROI.job makes an ROI of the whole brain using the network ROIs
+	wholeV1ROI.job make an ROI of the entire V1 using the eccentricity segments
+	Other scripts can help when there are errors in label creation, ex- merge, labelconcatforremakinglabel.job, etc...
+Labelchecking
+	reconlabel_checking_script can be used to automatically open labels in freeview for checking
+	concatlabelforchecking.m generates a script of all the subjects labels which can then be fed into...
+	1V1check.job and 67V1check.job which concatenate all the label files into one volume that you can put into freeview to check
+
+#Diffusion preprocessing (topup had already been run on the HCP data, so you will need to run that if your data hasn't had distortion corrected using topup)
+bedpost_gpu.job runs bedpost on subjects using gpu node
+Alternatively bed.job runs on a compute node (not reccommended)
+	if at first it doesn't succeed for a subject, rerun using provided scripts. However, you will need to delete the previously created bedpost folder, to delete alot of them at once, use bedpostcleanup.m 
+
+#Probtrackx
+each ...prob_HCP.job runs the ..s as the seed and the ..t as the target as a classification target, 10,000 (or 5000) streamlines, loopcheck, and distance correction
+within the postbrobreg folder, find the corresponding folder to the probtrackx run:
+	FOLLOW THE NUMBER SEQUENCE OR IT WILL NOT WORK and there is a set that corresponds to each run of probtrackx
+	1findbiggestclass.job runs find_the_biggest on the probtrackx run for whole FN and whole V1, this is not needed for other runs
+	2probout2structtransform.job puts the output of probtrackx into the the subject's anatomical space
+	3convertprob_log.job gets track probabilities by dividing the image by the max log
+	4vol2surf.job puts the track probabilities data onto the surface from 1mm below
+	5fsavg_smooth.job convert the track probabilites on the individual surface to fsaverage space and smooths
+	6group_averagesurf.job creates a group average in fsaverage space surface
+	7mni152reg_HCP.job creates registration matrix for anatomical to MNI space and then puts the probtrackx outputs that are in anatomical space into MNI space
+	8group_averaging_MNI is a set of scripts to generate MNI group averages of the track probabilities, follow the letter sequencing
+
+#diff_analysis
+contains jobs that run various kinds of analyses including comparisons in volume and surface space. See readme file within the folder. 

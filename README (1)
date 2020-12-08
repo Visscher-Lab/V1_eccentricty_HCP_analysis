@@ -1,0 +1,61 @@
+
+GroupaverageofROImean (surface)
+-use when you want to test the mean across people of the mean within the ROI of track probabilities
+-1surf2ascii puts the surface files into ascii so that matlab can read it
+-2ascii ROI extraction extracts only the values at the location within your ROI
+-3asciiaveraging and t-test takes the average of all the values within the ROI, runs t-test to test for differences between ROIs, then takes a group average of the ROI means
+
+comparepaths (volume)
+-use when directly comparing one or more pairs of paths
+-required before running scripts in randomize folder
+-job compare pairs of paths on individual data in MNI space
+
+randomize (volume)
+-1comparisonmergepath will merge paired comparison paths into a single volume to prepare to run randomize
+-2randomize will run randomize to create p-values 
+
+group_averaging_comparisons (volume)
+-use groupavgscript_HCP.m to create the list of subject files to add together (only have to do this once)
+-use groupavg_Comparisonpaths.job to create the averaged data on the brain in MNI space, copy output of matlab job into this script and set the number of subjects at the bottom, this script loops through multiple comparisons so set the ones you want at the top of the loop. 
+
+
+surface comparisons (surface)
+I'm not going to lie: this is MESSY. 
+But I just don't know how to make it better. Feel free to improve it. 
+
+Step 1: 
+-makingsublists.m will generate FSGD files which tells it what subjects you want run and how to run the analysis (these are for a paired analysis, for more info go here: https://surfer.nmr.mgh.harvard.edu/fswiki/PairedAnalysis), you need a sublist for each pair run and one FSGD that lists all the subjects. 
+
+Step 2:
+-makingmrispreprocscript.m will generate the required flags to enter into the mrispreproc script below, each subject has to have its own flag and you can't use "*". I tried. 
+-copy out the last iteration. 
+
+Step 3:
+-take what you copied from matlab's diary file and paste it in here: 1mris_preproc_lh_HCP_V1stoFNt.job on the "mris_preproc" command line after "--hemi lh" and edit the outputs at the bottom. I reccomend downloading the file and pasting on your desktop instead of the one on cheaha. Saves alot of frustration with crashing pluma. 
+
+Step 4:
+-you will notice that the script has ${network}, ${pair}, ${run1}, and ${run2}, these are place holders for now. 
+-Using find-and-replace- Go ahead and change the network name ("FP") to ${network}, the pair difference name ("cf") to ${pair}, "newcentral" to ${run1}, and "newfar" to ${run2}
+-So you should have a clean script with no specific networks or V1 names in there, anywhere. SAVE THIS. It will be your starter script for generating the rest of them. 
+
+Step 5:
+-now that you have a clean, generic script its time to make specific ones. 
+-Again I reccomend downloading the file and pasting on your desktop instead of the one on cheaha. Saves alot of frustration with crashing pluma. 
+-Now you are going to set the ${network}, ${pair}, ${run1}, and ${run2} to the values you want using find-and-replace. For example, to do comparison of mid and newcentral to CO network you would set them to CO, mc, mid, and newcentral respectively. 
+-Do this for each comparison, saving a new script each time. 
+
+Step 6:
+-now you have them for all the left hemisphere runs. Congrats. 
+-now find-and-replace "lh" to "rh" and save a new script with the script name reflecting this change.
+-Now you have two scripts for each comparison. 
+
+Step 7:
+-submit ALL the scripts to run mris_preproc. 
+-finally. 
+-This command prepares the data to run statistical analysis.
+
+Step 8:  
+-2smooth smooths the outputs of mrispreproc
+
+Step 9:
+-3mri_glm runs that stats on the smoothed output (for lh and rh seperately)

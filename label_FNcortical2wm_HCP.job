@@ -1,0 +1,123 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=1000
+#SBATCH --partition=express
+#SBATCH --time=1:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=FNlabel_submitjob
+#SBATCH --output=FNlabel_submitjob.txt
+
+subjects=/data/project/vislab/raw/HCP_900sub/subjects_reconall;
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+jobs=/data/scratch/snolin/HCP_jobs/jobs_fnwm
+D=/data/user/snolin/HCP_T1_data
+for patient in `ls -1 $D`
+do
+echo "#!/bin/bash
+#
+#SBATCH --time=12:00:00
+#SBATCH --job-name=$patient.FNcortex2wmlabel
+#SBATCH --partition=short
+#SBATCH --mem-per-cpu=20000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/fn2wmlabel_$patient.txt
+#SBATCH --ntasks=1
+subjects=/data/project/vislab/raw/HCP_900sub/subjects_reconall;
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+
+#7 yeo network Label conversion to wm
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net1.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_1.label --a net1
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net1.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_1.label --a net1
+
+mri_aparc2aseg --s $patient --annot net1 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net1+aseg.mgz --o $subjects/$patient/mri/net1_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net1_bin.mgz $subjects/$patient/mri/net1_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net1_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net1_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net2.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_2.label --a net2
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net2.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_2.label --a net2
+
+mri_aparc2aseg --s $patient --annot net2 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net2+aseg.mgz --o $subjects/$patient/mri/net2_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net2_bin.mgz $subjects/$patient/mri/net2_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net2_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net2_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net3.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_3.label --a net3
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net3.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_3.label --a net3
+
+mri_aparc2aseg --s $patient --annot net3 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net3+aseg.mgz --o $subjects/$patient/mri/net3_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net3_bin.mgz $subjects/$patient/mri/net3_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net3_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net3_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net4.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_4.label --a net4
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net4.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_4.label --a net4
+
+mri_aparc2aseg --s $patient --annot net4 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net4+aseg.mgz --o $subjects/$patient/mri/net4_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net4_bin.mgz $subjects/$patient/mri/net4_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net4_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net4_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net5.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_5.label --a net5
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net5.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_5.label --a net5
+
+mri_aparc2aseg --s $patient --annot net5 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net5+aseg.mgz --o $subjects/$patient/mri/net5_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net5_bin.mgz $subjects/$patient/mri/net5_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net5_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net5_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net6.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_6.label --a net6
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net6.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_6.label --a net6
+
+mri_aparc2aseg --s $patient --annot net6 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net6+aseg.mgz --o $subjects/$patient/mri/net6_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net6_bin.mgz $subjects/$patient/mri/net6_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net6_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net6_diffROI.nii --inv --nearest
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net7.ctab --s $patient --h lh --l $subjects/$patient/label/Yeolabels/lh.7Networks_7.label --a net7
+
+mris_label2annot --ctab /data/user/snolin/Scripts/Labelmaker/color_tables/clut.7net7.ctab --s $patient --h rh --l $subjects/$patient/label/Yeolabels/rh.7Networks_7.label --a net7
+
+mri_aparc2aseg --s $patient --annot net7 --labelwm
+
+mri_binarize --i $subjects/$patient/mri/net7+aseg.mgz --o $subjects/$patient/mri/net7_bin.mgz --match 4001 3001
+
+mri_convert $subjects/$patient/mri/net7_bin.mgz $subjects/$patient/mri/net7_bin.nii
+
+mri_vol2vol --mov /data/project/vislab/raw/HCP_900sub/HCP_diff_data/$patient/data.nii.gz --targ $subjects/$patient/mri/net7_bin.nii --reg /data/user/snolin/HCP_registration/HCP_BBR/HCP_registration_new/$patient/register_edit.dat --o $subjects/$patient/mri/net7_diffROI.nii --inv --nearest
+" > $jobs/fn2wm_$patient.job
+
+sbatch $jobs/fn2wm_$patient.job
+done

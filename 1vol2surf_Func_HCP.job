@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=vols_submitjob
+#SBATCH --output=4vol2surfsubmitjobfunc.txt
+
+#This scripts projects seed to voxel outputs (in structural space) onto the freesurfer white surface
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/jobs_funcvol2surf
+
+#set location for output for surface overlays
+outp=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data;
+cd $outp
+mkdir central_surf
+mkdir mid_surf
+mkdir far_surf
+
+#set location for where func analysis outputs in structural space 
+vols=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/data;
+
+#path to output of reconall
+subjects=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy;
+
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$subjects 
+export SUBJECTS_DIR
+cd $subjects
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+for patient in `ls -1 $diff`
+do 
+echo "#!/bin/bash
+#
+#SBATCH --time=2:00:00
+#SBATCH --job-name=vol2surf$patient
+#SBATCH --partition=express
+#SBATCH --mem-per-cpu=8000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/vol2surf_$patient.txt
+#SBATCH --ntasks=1
+
+SUBJECTS_DIR=$diff
+#mri_vol2surf --src (inputvolumepath) --out (outputpath) --trgsubject (subid) --hemi (lh or rh) --surf white (default) --projdist-avg min max del
+
+#put central on surf
+mri_vol2surf --src $vols/$patient/central/SCA_result.nii.gz --o $outp/central_surf/centrallhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+mri_vol2surf --src $vols/$patient/central/SCA_result.nii.gz --o $outp/central_surf/centralrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+#put on fsaverage surf
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/central_surf/centrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/central_surf/fsavg_centrallhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/central_surf/centralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/central_surf/fsavg_centralrhsurf_$patient.mgh --hemi rh
+#smooth
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/central_surf/fsavg_centrallhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/central_surf/smooth2fsavg_centrallhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/central_surf/fsavg_centralrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/central_surf/smooth2fsavg_centralrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+
+#put mid on surf
+mri_vol2surf --src $vols/$patient/mid/SCA_result.nii.gz --o $outp/mid_surf/midlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+#put mid on surf
+mri_vol2surf --src $vols/$patient/mid/SCA_result.nii.gz --o $outp/mid_surf/midrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+#put on fsaverage surf
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/mid_surf/midlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/mid_surf/fsavg_midlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/mid_surf/midrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/mid_surf/fsavg_midrhsurf_$patient.mgh --hemi rh
+#smooth
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/mid_surf/fsavg_midlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/mid_surf/smooth2fsavg_midlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/mid_surf/fsavg_midrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/mid_surf/smooth2fsavg_midrhsurf_$patient.mgh --hemi rh --fwhm-trg 2
+
+
+#put far on surf
+mri_vol2surf --src $vols/$patient/far/SCA_result.nii.gz --o $outp/far_surf/farlhsurf_$patient.mgh --regheader $patient --hemi lh --surf white --projfrac -1
+#put far on surf
+mri_vol2surf --src $vols/$patient/far/SCA_result.nii.gz --o $outp/far_surf/farrhsurf_$patient.mgh --regheader $patient --hemi rh --surf white --projfrac -1
+#put on fsaverage surf
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/far_surf/farlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/far_surf/fsavg_farlhsurf_$patient.mgh --hemi lh
+mri_surf2surf --srcsubject $patient --srcsurfval $outp/far_surf/farrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/far_surf/fsavg_farrhsurf_$patient.mgh --hemi rh
+#smooth
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/far_surf/fsavg_farlhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/far_surf/smooth2fsavg_farlhsurf_$patient.mgh --hemi lh --fwhm-trg 2
+mri_surf2surf --srcsubject fsaverage --srcsurfval $outp/far_surf/fsavg_farrhsurf_$patient.mgh --trgsubject fsaverage --trgsurfval $outp/far_surf/smooth2fsavg_farrhsurf_$patient.mgh --hemi rh --fwhm-trg 2" > $jobs/$patient.job
+
+sbatch $jobs/$patient.job
+
+done

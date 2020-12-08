@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=1000
+#SBATCH --partition=express
+#SBATCH --time=2:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=mni152_submitjob
+#SBATCH --output=mni152_submitFNstoV1t.txt
+
+#this script resamples probtrackx output that have already been put into subject anatomical space into MNI 1mm space
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/jobs_resample
+
+#set location for output of resampled probtrackx paths
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+cd $outp
+mkdir FPtonewcentral_MNI
+mkdir COtonewcentral_MNI
+mkdir DMNtonewcentral_MNI
+mkdir FPtonewfar_MNI
+mkdir COtonewfar_MNI
+mkdir DMNtonewfar_MNI
+mkdir FPtomid_MNI
+mkdir COtomid_MNI
+mkdir DMNtomid_MNI
+#set location for where registration matricies for T1 to MNI will go/already exist
+registration=/data/project/vislab/a/HCP_diff_Sara/reg_t12MNI
+
+#set location for where probtrackx paths that are going to be resampled (in anatomical space) are located
+prb=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+for patient in `ls -1 $diff`
+do
+echo "#!/bin/bash
+#
+#SBATCH --time=2:00:00
+#SBATCH --job-name=mniFNstoV1t_$patient
+#SBATCH --partition=express
+#SBATCH --mem-per-cpu=8000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/mni152FNstoV1t_$patient.txt
+#SBATCH --ntasks=1
+
+SUBJECTS_DIR=$diff
+
+#create folder for registration matrix for each subject
+#cd $registration
+#mkdir $patient
+
+create registration matrix for T1 to MNI for each subject
+#mni152reg --s $patient --o $registration/$patient/registermni_$patient.dat --1 --save-vol
+
+#resample newcentral paths
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/FPtonewcentral_logprob/FPtonewcentral_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/FPtonewcentral_MNI/FPtonewcentral_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/COtonewcentral_logprob/COtonewcentral_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/COtonewcentral_MNI/COtonewcentral_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/DMNtonewcentral_logprob/DMNtonewcentral_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/DMNtonewcentral_MNI/DMNtonewcentral_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+#resample mid paths
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/FPtomid_logprob/FPtomid_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/FPtomid_MNI/FPtomid_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/COtomid_logprob/COtomid_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/COtomid_MNI/COtomid_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/DMNtomid_logprob/DMNtomid_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/DMNtomid_MNI/DMNtomid_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+#resample newfar paths
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/FPtonewfar_logprob/FPtonewfar_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/FPtonewfar_MNI/FPtonewfar_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/COtonewfar_logprob/COtonewfar_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/COtonewfar_MNI/COtonewfar_MNI_$patient.nii.gz --nearest --rot 180 0 0
+
+mri_vol2vol --targ /share/apps/rc/software/FSL/5.0.9-centos6_64/data/standard/MNI152_T1_1mm.nii.gz --mov $prb/DMNtonewfar_logprob/DMNtonewfar_T1logptrack_$patient.nii.gz --reg $registration/$patient/registermni_$patient.dat --o $outp/DMNtonewfar_MNI/DMNtonewfar_MNI_$patient.nii.gz --nearest --rot 180 0 0"> $jobs/mni152_$patient.job
+
+sbatch $jobs/mni152_$patient.job
+
+done
+
+

@@ -1,0 +1,210 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=5000
+#SBATCH --partition=short
+#SBATCH --time=6:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=FNV1prob_submitjob
+#SBATCH --output=FNstoV1tprobsubmitjobecc.txt
+
+#This scripts run FSL probtrackx from newcentral region of V1 to the Yeo parcellation of the frontoparietal network (net6), the mid-peripheral region of V1 to the cingulo opercular network (net4), and the far-peripheral region of V1 to the default mode network (net7).
+
+#location of job scripts and logs
+jobs=/data/scratch/snolin/HCP_jobs/prob
+
+#set location for output of probtrackx paths
+outp=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+
+#set location for where target lists will go
+targ=$outp/targlists
+mkdir $targ
+#set location for where V1 segment labels exist
+lab=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+
+#set location for where bedpostX directories are located
+bed=/data/project/vislab/raw/HCP_900sub/HCP_diff_unzip_preproc
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheck
+
+for patient in `ls -1 $diff`
+do 
+echo "#!/bin/bash
+#
+#SBATCH --time=150:00:00
+#SBATCH --job-name=FNstoV1tprob$patient
+#SBATCH --partition=long
+#SBATCH --mem-per-cpu=10000
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --out=$jobs/FNstoV1tproblog$patient.txt
+#SBATCH --ntasks=1
+
+##FP to newcentral###
+if [ -f $outp/FPtonewcentral/$patient/fdt_paths.nii.gz ]; then echo "FPtonewcentral has completed"
+else 
+#create folder structure
+cd $outp
+mkdir FPtonewcentral
+cd FPtonewcentral
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsFPtonewcentral_$patient.txt
+echo "$lab/$patient/mri/newcentralV1_diffROI.nii" > targetsFPtonewcentral_$patient.txt
+
+#Probtrackx run on FP to newcentral V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net6_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/FPtonewcentral/$patient --targetmasks=$targ/targetsFPtonewcentral_$patient.txt --os2t 
+fi
+
+##CO to newcentral###
+if [ -f $outp/COtonewcentral/$patient/fdt_paths.nii.gz ]; then echo "COtonewcentral has completed"
+else 
+#create folder structure
+cd $outp
+mkdir COtonewcentral
+cd COtonewcentral
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsCOtonewcentral_$patient.txt
+echo "$lab/$patient/mri/newcentralV1_diffROI.nii" > targetsCOtonewcentral_$patient.txt
+
+#Probtrackx run on CO to newcentral V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net4_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/COtonewcentral/$patient --targetmasks=$targ/targetsCOtonewcentral_$patient.txt --os2t 
+fi
+
+##DMN to newcentral###
+if [ -f $outp/DMNtonewcentral/$patient/fdt_paths.nii.gz ]; then echo "DMNtonewcentral has completed"
+else 
+#create folder structure
+cd $outp
+mkdir DMNtonewcentral
+cd DMNtonewcentral
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsDMNtonewcentral_$patient.txt
+echo "$lab/$patient/mri/newcentralV1_diffROI.nii" > targetsDMNtonewcentral_$patient.txt
+
+#Probtrackx run on DMN to newcentral V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net7_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/DMNtonewcentral/$patient --targetmasks=$targ/targetsDMNtonewcentral_$patient.txt --os2t 
+fi
+
+##FP to mid###
+if [ -f $outp/FPtomid/$patient/fdt_paths.nii.gz ]; then echo "FPtomid has completed"
+else 
+#create folder structure
+cd $outp
+mkdir FPtomid
+cd FPtomid
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsFPtomid_$patient.txt
+echo "$lab/$patient/mri/midV1_diffROI.nii" > targetsFPtomid_$patient.txt
+
+#Probtrackx run on FP to mid V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net6_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/FPtomid/$patient --targetmasks=$targ/targetsFPtomid_$patient.txt --os2t 
+fi
+
+##CO to mid###
+if [ -f $outp/COtomid/$patient/fdt_paths.nii.gz ]; then echo "COtomid has completed"
+else 
+#create folder structure
+cd $outp
+mkdir COtomid
+cd COtomid
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsCOtomid_$patient.txt
+echo "$lab/$patient/mri/midV1_diffROI.nii" > targetsCOtomid_$patient.txt
+
+#Probtrackx run on CO to mid V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net4_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/COtomid/$patient --targetmasks=$targ/targetsCOtomid_$patient.txt --os2t 
+fi
+
+##DMN to mid###
+if [ -f $outp/DMNtomid/$patient/fdt_paths.nii.gz ]; then echo "DMNtomid has completed"
+else 
+#create folder structure
+cd $outp
+mkdir DMNtomid
+cd DMNtomid
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsDMNtomid_$patient.txt
+echo "$lab/$patient/mri/midV1_diffROI.nii" > targetsDMNtomid_$patient.txt
+
+#Probtrackx run on DMN to mid V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net7_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/DMNtomid/$patient --targetmasks=$targ/targetsDMNtomid_$patient.txt --os2t 
+fi
+
+##FP to newfar###
+if [ -f $outp/FPtonewfar/$patient/fdt_paths.nii.gz ]; then echo "FPtonewfar has completed"
+else 
+#create folder structure
+cd $outp
+mkdir FPtonewfar
+cd FPtonewfar
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsFPtonewfar_$patient.txt
+echo "$lab/$patient/mri/newfarV1_diffROI.nii" > targetsFPtonewfar_$patient.txt
+
+#Probtrackx run on FP to newfar V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net6_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/FPtonewfar/$patient --targetmasks=$targ/targetsFPtonewfar_$patient.txt --os2t 
+fi
+
+##CO to newfar###
+if [ -f $outp/COtonewfar/$patient/fdt_paths.nii.gz ]; then echo "COtonewfar has completed"
+else 
+#create folder structure
+cd $outp
+mkdir COtonewfar
+cd COtonewfar
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsCOtonewfar_$patient.txt
+echo "$lab/$patient/mri/newfarV1_diffROI.nii" > targetsCOtonewfar_$patient.txt
+
+#Probtrackx run on CO to newfar V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net4_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/COtonewfar/$patient --targetmasks=$targ/targetsCOtonewfar_$patient.txt --os2t 
+fi
+
+##DMN to newfar###
+if [ -f $outp/DMNtonewfar/$patient/fdt_paths.nii.gz ]; then echo "DMNtonewfar has completed"
+else 
+#create folder structure
+cd $outp
+mkdir DMNtonewfar
+cd DMNtonewfar
+mkdir $patient
+
+#create target list
+cd $targ
+touch targetsDMNtonewfar_$patient.txt
+echo "$lab/$patient/mri/newfarV1_diffROI.nii" > targetsDMNtonewfar_$patient.txt
+
+#Probtrackx run on DMN to newfar V1
+/share/apps/rc/software/FSL/5.0.9-centos6_64/bin/probtrackx2 -x $lab/$patient/mri/net7_diffROI.nii -V 1 -l --onewaycondition -c 0.2 -S 2000 --steplength=0.5 -P 5000 --fibthresh=0.01 --distthresh=0.0 --sampvox=0.0 --forcedir --opd -s $bed/$patient/T1w/Diffusion.bedpostX/merged -m $bed/$patient/T1w/Diffusion.bedpostX/nodif_brain_mask --dir=$outp/DMNtonewfar/$patient --targetmasks=$targ/targetsDMNtonewfar_$patient.txt --os2t
+fi" > $jobs/$patient.job
+
+sbatch $jobs/$patient.job
+
+done
+

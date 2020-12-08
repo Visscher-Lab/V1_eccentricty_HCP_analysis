@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=50000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=glm
+#SBATCH --output=3glmfunc.txt
+
+recon=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheckcopy
+#set as Freesurfer subjects directory
+unset SUBJECTS_DIR
+SUBJECTS_DIR=$recon 
+export SUBJECTS_DIR
+
+#define mris_preproc output folder
+ana=/data/project/vislab/a/HCP_diff_Sara/UP_funcanalysis/surface_data/surface_analysis
+
+#central versus far
+#left hemi
+data=$ana/preproc_cf
+out=$ana/glmdir_cflh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_cf
+out=$ana/glmdir_cfrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.cf.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+
+#mid versus central
+#left hemi
+data=$ana/preproc_mc
+out=$ana/glmdir_mclh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.mc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_mc
+out=$ana/glmdir_mcrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.mc.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+
+#far versus mid
+#left hemi
+data=$ana/preproc_fm
+out=$ana/glmdir_fmlh
+mkdir $out
+mri_glmfit --y $data/lh.paired-diff.fm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage lh --glmdir $out --save-yhat --no-prune
+
+#right hemi
+data=$ana/preproc_fm
+out=$ana/glmdir_fmrh
+mkdir $out
+mri_glmfit --y $data/rh.paired-diff.fm.sm02.mgh --fsgd $ana/FSGD.txt --osgm --surf fsaverage rh --glmdir $out --save-yhat --no-prune
+

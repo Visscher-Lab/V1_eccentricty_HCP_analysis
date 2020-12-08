@@ -1,0 +1,90 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=8000
+#SBATCH --partition=short
+#SBATCH --time=12:00:00
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=snolin@uab.edu
+#SBATCH --job-name=subdiffconcat
+#SBATCH --output=subdiffconcat.txt
+
+#location of participants you want to pull
+diff=/data/project/vislab/a/HCP_diff_Sara/subjects_reconall_postcheck
+in=/data/project/vislab/a/HCP_diff_Sara/FNstoV1tprob
+cd $in/surface_analysis
+mkdir paired
+out=$in/surface_analysis/paired
+
+##FP newcentral versus newfar##
+newcentral=$in/FPtonewcentral_surf
+newfar=$in/FPtonewfar_surf
+cd $out
+mkdir FP_cf
+#take difference of subject's newcentral minus newfar 
+for patient in `ls -1 $diff`
+do 
+mri_concat --i $newcentral/fsavg_FPtonewcentrallhsurf_$patient.mgh --i $newfar/fsavg_FPtonewfarlhsurf_$patient.mgh --o $out/FP_cf/lh.cfdiff_$patient.mgh --paired-diff
+mri_concat --i $newcentral/fsavg_FPtonewcentralrhsurf_$patient.mgh --i $newfar/fsavg_FPtonewfarrhsurf_$patient.mgh --o $out/FP_cf/rh.cfdiff_$patient.mgh --paired-diff
+done
+
+cd $in/surface_analysis
+mkdir preproc_FP_cf_lh
+mkdir preproc_FP_cf_rh
+mri_concat $out/FP_cf/lh* --o $in/surface_analysis/preproc_FP_cf_lh/lh.paired-diff.FP_cf.mgh
+mri_concat $out/FP_cf/rh* --o $in/surface_analysis/preproc_FP_cf_rh/rh.paired-diff.FP_cf.mgh
+
+##DMN newfar versus newcentral##
+newfar=$in/DMNtonewfar_surf
+newcentral=$in/DMNtonewcentral_surf
+cd $out
+mkdir DMN_fc
+#take difference of subject's newfar minus newcentral 
+for patient in `ls -1 $diff`
+do 
+mri_concat --i $newfar/fsavg_DMNtonewfarlhsurf_$patient.mgh --i $newcentral/fsavg_DMNtonewcentrallhsurf_$patient.mgh --o $out/DMN_fc/lh.fcdiff_$patient.mgh --paired-diff
+mri_concat --i $newfar/fsavg_DMNtonewfarrhsurf_$patient.mgh --i $newcentral/fsavg_DMNtonewcentralrhsurf_$patient.mgh --o $out/DMN_fc/rh.fcdiff_$patient.mgh --paired-diff
+done
+
+cd $in/surface_analysis
+mkdir preproc_DMN_fc_lh
+mkdir preproc_DMN_fc_rh
+mri_concat $out/DMN_fc/lh* --o $in/surface_analysis/preproc_DMN_fc_lh/lh.paired-diff.DMN_fc.mgh
+mri_concat $out/DMN_fc/rh* --o $in/surface_analysis/preproc_DMN_fc_rh/rh.paired-diff.DMN_fc.mgh
+
+##CO mid versus newcentral##
+mid=$in/COtomid_surf
+newcentral=$in/COtonewcentral_surf
+cd $out
+mkdir CO_mc
+#take difference of subject's mid minus newcentral 
+for patient in `ls -1 $diff`
+do 
+mri_concat --i $mid/fsavg_COtomidlhsurf_$patient.mgh --i $newcentral/fsavg_COtonewcentrallhsurf_$patient.mgh --o $out/CO_mc/lh.mcdiff_$patient.mgh --paired-diff
+mri_concat --i $mid/fsavg_COtomidrhsurf_$patient.mgh --i $newcentral/fsavg_COtonewcentralrhsurf_$patient.mgh --o $out/CO_mc/rh.mcdiff_$patient.mgh --paired-diff
+done
+
+cd $in/surface_analysis
+mkdir preproc_CO_mc_lh
+mkdir preproc_CO_mc_rh
+mri_concat $out/CO_mc/lh* --o $in/surface_analysis/preproc_CO_mc_lh/lh.paired-diff.CO_mc.mgh
+mri_concat $out/CO_mc/rh* --o $in/surface_analysis/preproc_CO_mc_rh/rh.paired-diff.CO_mc.mgh
+
+##CO mid versus newfar##
+mid=$in/COtomid_surf
+newfar=$in/COtonewfar_surf
+cd $out
+mkdir CO_mf
+#take difference of subject's mid minus newfar 
+for patient in `ls -1 $diff`
+do 
+mri_concat --i $mid/fsavg_COtomidlhsurf_$patient.mgh --i $newfar/fsavg_COtonewfarlhsurf_$patient.mgh --o $out/CO_mf/lh.mfdiff_$patient.mgh --paired-diff
+mri_concat --i $mid/fsavg_COtomidrhsurf_$patient.mgh --i $newfar/fsavg_COtonewfarrhsurf_$patient.mgh --o $out/CO_mf/rh.mfdiff_$patient.mgh --paired-diff
+done
+
+cd $in/surface_analysis
+mkdir preproc_CO_mf_lh
+mkdir preproc_CO_mf_rh
+mri_concat $out/CO_mf/lh* --o $in/surface_analysis/preproc_CO_mf_lh/lh.paired-diff.CO_mf.mgh
+mri_concat $out/CO_mf/rh* --o $in/surface_analysis/preproc_CO_mf_rh/rh.paired-diff.CO_mf.mgh
+
